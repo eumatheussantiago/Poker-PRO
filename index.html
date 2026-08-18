@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poker Pro</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Importação do Chart.js para os gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <header>
@@ -19,8 +21,15 @@
             <input type="number" id="cash-out" placeholder="Cash-out (R$)">
             <button onclick="registrarSessao()">Salvar Sessão</button>
             
-            <div id="resultado-bankroll">
-                <p>Lucro Total: <span id="lucro-total">R$ 0.00</span></p>
+            <div id="resultado-bankroll" style="margin-top: 15px;">
+                <p>Lucro Total: <strong id="lucro-total">R$ 0.00</strong></p>
+                <p>ROI: <strong id="roi-total">0.00%</strong></p>
+                <p>Sessões Jogadas: <strong id="sessoes-total">0</strong></p>
+            </div>
+
+            <!-- Gráfico de evolução -->
+            <div style="margin-top: 20px; background-color: #222; padding: 10px; border-radius: 8px;">
+                <canvas id="graficoBankroll" width="400" height="200"></canvas>
             </div>
         </section>
 
@@ -29,6 +38,14 @@
         <!-- Módulo: Matriz de Ranges -->
         <section id="ranges-section">
             <h2>Visualizador de Ranges</h2>
+            
+            <!-- Botões de controle -->
+            <div class="controles-range">
+                <button onclick="aplicarRange('UTG')">Range UTG</button>
+                <button onclick="aplicarRange('BTN')">Range BTN</button>
+                <button onclick="aplicarRange('LIMPAR')" style="background-color: #555;">Limpar</button>
+            </div>
+
             <div id="matriz-grid" class="grid-poker">
                 <!-- O JavaScript vai injetar as 169 mãos aqui dentro -->
             </div>
