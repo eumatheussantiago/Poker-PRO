@@ -115,20 +115,53 @@ function gerarRNG() {
 // MÓDULO 1: AUTENTICAÇÃO E NAVEGAÇÃO
 // ==========================================
 function mostrarAbaAuth(aba) {
+    console.log('📍 mostrarAbaAuth chamado com aba:', aba);
+    
     try {
+        // Validar entrada
+        if (!aba) {
+            console.warn('Aba não foi passada, usando padrão "login"');
+            aba = 'login';
+        }
+
         const abaValida = ['login', 'signup'].includes(aba) ? aba : 'login';
+        console.log('✅ Aba válida:', abaValida);
         
         // Esconder todos os formulários
-        document.getElementById('form-login').classList.add('hidden');
-        document.getElementById('form-signup').classList.add('hidden');
-        document.getElementById('tab-login').classList.remove('active-tab');
-        document.getElementById('tab-signup').classList.remove('active-tab');
+        const formLogin = document.getElementById('form-login');
+        const formSignup = document.getElementById('form-signup');
+        const tabLogin = document.getElementById('tab-login');
+        const tabSignup = document.getElementById('tab-signup');
+
+        if (!formLogin || !formSignup || !tabLogin || !tabSignup) {
+            console.error('❌ Elementos não encontrados no DOM!', {
+                formLogin: !!formLogin,
+                formSignup: !!formSignup,
+                tabLogin: !!tabLogin,
+                tabSignup: !!tabSignup
+            });
+            return;
+        }
+
+        // Remover 'hidden' e 'active-tab' de todos
+        formLogin.classList.add('hidden');
+        formSignup.classList.add('hidden');
+        tabLogin.classList.remove('active-tab');
+        tabSignup.classList.remove('active-tab');
 
         // Mostrar a aba selecionada
-        document.getElementById(`form-${abaValida}`).classList.remove('hidden');
-        document.getElementById(`tab-${abaValida}`).classList.add('active-tab');
+        if (abaValida === 'login') {
+            formLogin.classList.remove('hidden');
+            tabLogin.classList.add('active-tab');
+            console.log('✅ Aba LOGIN ativada');
+        } else if (abaValida === 'signup') {
+            formSignup.classList.remove('hidden');
+            tabSignup.classList.add('active-tab');
+            console.log('✅ Aba SIGNUP ativada');
+        }
+        
     } catch (err) {
-        console.error('Erro em mostrarAbaAuth():', err);
+        console.error('❌ Erro em mostrarAbaAuth():', err, err.stack);
     }
 }
 
@@ -635,6 +668,33 @@ function responderQuiz(resp) {
 // ==========================================
 window.onload = async function() {
     try {
+        // ========== SETUP DOS EVENT LISTENERS ==========
+        console.log('🔧 Configurando event listeners...');
+        
+        // Listeners para abas de autenticação
+        const tabLogin = document.getElementById('tab-login');
+        const tabSignup = document.getElementById('tab-signup');
+        
+        if (tabLogin) {
+            tabLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🔗 Botão Login clicado');
+                mostrarAbaAuth('login');
+            });
+        } else {
+            console.warn('⚠️ Botão tab-login não encontrado');
+        }
+        
+        if (tabSignup) {
+            tabSignup.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('🔗 Botão Signup clicado');
+                mostrarAbaAuth('signup');
+            });
+        } else {
+            console.warn('⚠️ Botão tab-signup não encontrado');
+        }
+
         // Garantir que Supabase foi inicializado
         if (!window.supabase || !supabase) {
             console.error('Supabase não foi carregado!');
