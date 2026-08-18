@@ -1,133 +1,144 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Roboto+Mono:wght@400;600;700&display=swap');
 
 :root {
-    --bg-fundo: #0f172a; 
-    --bg-card: #1e293b;
+    --bg-fundo: #0f1115; 
+    --bg-card: #181b21;
+    --bg-panel: #222630;
+    
     --primaria: #3b82f6; 
     --primaria-hover: #2563eb;
     --texto: #f8fafc;
     --texto-secundario: #94a3b8;
-    --sucesso: #10b981;
-    --perigo: #ef4444;
-    --borda: #334155;
+    --borda: #333b4d;
     
-    /* Variáveis da Mesa */
-    --mesa-pano: radial-gradient(ellipse, #15803d 0%, #14532d 100%);
-    --mesa-borda: #0f172a;
+    --perigo: #ef4444;  
+    --sucesso: #10b981; 
+    --fold: #1e3a8a; 
+    
+    --mesa-pano: radial-gradient(ellipse, #14532d 0%, #064e3b 100%);
+    --mesa-borda: #0f1115;
 }
 
-body { font-family: 'Inter', sans-serif; background-color: var(--bg-fundo); color: var(--texto); margin: 0; padding: 0; line-height: 1.5; }
-
-/* Utilitários */
+body { font-family: 'Inter', sans-serif; background-color: var(--bg-fundo); color: var(--texto); margin: 0; padding: 0; line-height: 1.5; overflow-x: hidden; }
 .hidden { display: none !important; }
+.mono { font-family: 'Roboto Mono', monospace; letter-spacing: -0.5px; }
 .lucro-positivo { color: var(--sucesso) !important; }
 .lucro-negativo { color: var(--perigo) !important; }
 
-/* =========================================
-   TELA DE AUTENTICAÇÃO
-========================================= */
-.auth-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(circle at top, #1e293b 0%, var(--bg-fundo) 70%); padding: 20px;}
-.auth-card { max-width: 380px; width: 100%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border-top: 4px solid var(--primaria); background-color: var(--bg-card); padding: 30px; border-radius: 12px; }
-.auth-card input { width: 100%; box-sizing: border-box; margin-bottom: 15px; background-color: #0f172a; border: 1px solid var(--borda); color: white; padding: 12px; border-radius: 8px;}
+/* Toasts */
+#toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { background-color: var(--bg-card); color: var(--texto); padding: 15px 20px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-left: 4px solid var(--primaria); animation: slideIn 0.3s ease-out forwards; display: flex; align-items: center; font-size: 14px; font-weight: 500; min-width: 250px;}
+.toast.success { border-left-color: var(--sucesso); }
+.toast.error { border-left-color: var(--perigo); }
+.toast.info { border-left-color: var(--primaria); }
+.toast.fade-out { animation: fadeOut 0.3s ease-in forwards; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+
+/* Autenticação */
+.auth-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(circle at top, #1e293b 0%, var(--bg-fundo) 70%); padding: 20px; }
+.auth-card { max-width: 380px; width: 100%; text-align: center; border-top: 4px solid var(--primaria); background-color: var(--bg-card); padding: 30px; border-radius: 12px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);}
 .auth-tabs { display: flex; margin-bottom: 20px; background-color: var(--bg-fundo); border-radius: 8px; padding: 5px; }
-.tab-btn { flex: 1; background: transparent; color: var(--texto-secundario); padding: 10px; margin: 0; border-radius: 6px; border: none; cursor: pointer; font-weight: 600;}
+.tab-btn { flex: 1; background: transparent; color: var(--texto-secundario); padding: 10px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.2s;}
 .tab-btn:hover { color: var(--texto); }
 .active-tab { background-color: var(--bg-card); color: var(--texto); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--borda); background-color: var(--bg-fundo); color: var(--texto); box-sizing: border-box; font-family: 'Inter', sans-serif;}
+input:focus, select:focus { outline: none; border-color: var(--primaria); }
 
-/* =========================================
-   ESTRUTURA GERAL (DASHBOARD)
-========================================= */
-header { background-color: var(--bg-card); padding: 20px; text-align: center; border-bottom: 1px solid var(--borda); }
-header h1 { margin: 0; font-size: 24px; font-weight: 800; color: var(--primaria); }
-main { max-width: 1000px; margin: 30px auto; padding: 0 20px; display: grid; gap: 30px; }
+/* Botões Globais */
+.btn-primario { background-color: var(--primaria); color: white; padding: 12px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; font-family: 'Inter', sans-serif; display: flex; align-items: center; gap: 8px; justify-content: center;}
+.btn-primario:hover:not(:disabled) { background-color: var(--primaria-hover); transform: translateY(-1px); }
+.btn-primario:disabled, .btn-primario.loading { opacity: 0.6; cursor: not-allowed; }
+.btn-primario.loading { pointer-events: none; }
+.btn-secundario { background-color: transparent; border: 1px solid var(--borda); color: var(--texto); padding: 10px 15px; border-radius: 8px; cursor: pointer; font-weight: 500; transition: 0.2s;}
+.btn-secundario:hover { background-color: var(--bg-panel); }
+.btn-secundario:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Loading Spinner */
+.spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: white; animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Header & Navegação */
+header { background-color: var(--bg-card); border-bottom: 1px solid var(--borda); position: sticky; top: 0; z-index: 100;}
+.header-content { max-width: 1400px; margin: 0 auto; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;}
+header h1 { margin: 0; font-size: 20px; font-weight: 800; color: var(--texto); }
+.app-nav { display: flex; gap: 5px; background-color: var(--bg-fundo); padding: 4px; border-radius: 8px;}
+.nav-item { background: transparent; border: none; color: var(--texto-secundario); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px; transition: 0.2s;}
+.nav-item:hover { color: var(--texto); }
+.nav-item.active { background-color: var(--bg-panel); color: var(--primaria); }
+.rng-tool { background-color: var(--bg-fundo); border: 1px solid var(--borda); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-size: 14px; color: var(--texto-secundario); user-select: none; transition: 0.2s;}
+.rng-tool:hover { border-color: var(--primaria); color: white;}
+.rng-tool strong { color: var(--sucesso); font-size: 16px; margin-left: 5px;}
+
+/* Layout Principal */
+main { max-width: 1400px; margin: 20px auto; padding: 0 20px; }
 .card { background-color: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--borda); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-h2 { margin-top: 0; font-size: 18px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; }
+h2 { margin-top: 0; font-size: 16px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; color: var(--texto-secundario);}
 
-/* Controles e Botões */
+/* Transição de Módulos */
+.module-section { display: none; animation: fadeIn 0.3s ease-out; }
+.module-section.active-module { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Módulo 1: Bankroll */
 .form-grupo { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-input, select { padding: 12px; border-radius: 8px; border: 1px solid var(--borda); background-color: var(--bg-fundo); color: var(--texto); flex: 1; min-width: 120px; font-family: 'Inter', sans-serif;}
-button { padding: 12px 20px; border-radius: 8px; border: none; background-color: var(--primaria); color: white; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;}
-button:hover { background-color: var(--primaria-hover); transform: translateY(-2px); }
-button.secundario { background-color: transparent; border: 1px solid var(--borda); color: var(--texto); }
-button.secundario:hover { background-color: var(--borda); }
-
-/* Financeiro Stats */
 .stats-container { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
 .stat-box { flex: 1; background-color: var(--bg-fundo); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid var(--borda); min-width: 130px; }
 .stat-box span { display: block; font-size: 12px; color: var(--texto-secundario); text-transform: uppercase; margin-bottom: 5px; font-weight: 600;}
-.stat-box strong { font-size: 22px; font-weight: 800; }
-
-.tabela-historico { width: 100%; border-collapse: collapse; font-size: 14px; }
-.tabela-historico th, .tabela-historico td { padding: 12px; text-align: left; border-bottom: 1px solid var(--borda); }
-.tabela-historico th { color: var(--texto-secundario); font-weight: 600; }
-
-/* =========================================
-   MESA DE POKER VISUAL (GEOMETRIA)
-========================================= */
-.mesa-container {
+.stat-box strong { font-size: 22px; font-weight: 800; font-family: 'Roboto Mono', monospace;}
+.filtros-bankroll { display: flex; justify-content: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;}
+/* CORREÇÃO DO GRÁFICO: Altura Fixa obrigatória para o Chart.js não colapsar */
+.grafico-container { 
+    background-color: var(--bg-fundo); 
+    padding: 20px; 
+    border-radius: 8px; 
+    border: 1px solid var(--borda); 
+    margin-bottom: 30px;
+    height: 250px; 
     position: relative;
     width: 100%;
-    max-width: 600px;
-    height: 250px; 
-    margin: 20px auto 40px auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    box-sizing: border-box;
 }
+.historico-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 15px;}
+.historico-header h3 { margin: 0; font-size: 16px;}
+.table-responsive { overflow-x: auto; }
+.tabela-historico { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabela-historico th, .tabela-historico td { padding: 12px; text-align: left; border-bottom: 1px solid var(--borda); }
+.tabela-historico th { color: var(--texto-secundario); font-weight: 600; white-space: nowrap;}
+.tabela-historico td { font-family: 'Roboto Mono', monospace; }
 
-.poker-table-shape {
-    width: 75%;
-    height: 60%;
-    background: var(--mesa-pano);
-    border-radius: 50%; /* Oval Perfeito */
-    border: 12px solid var(--mesa-borda);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.6);
-    position: relative;
-}
+/* Módulo 2: GTO */
+.layout-3-col { display: grid; grid-template-columns: 250px 1fr 380px; gap: 20px; align-items: start; }
+@media (max-width: 1100px) { .layout-3-col { grid-template-columns: 1fr; } }
+.col-panel { background-color: var(--bg-panel); border: 1px solid var(--borda); border-radius: 8px; padding: 20px; }
+.center-panel { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 350px;}
+.form-grupo-vertical { display: flex; flex-direction: column; gap: 15px; }
+.form-grupo-vertical label { font-size: 12px; color: var(--texto-secundario); margin-bottom: -10px; font-weight: 600; text-transform: uppercase;}
 
-/* Cadeiras */
-.seat {
-    position: absolute;
-    width: 45px;
-    height: 45px;
-    background-color: var(--bg-fundo);
-    border: 2px solid var(--borda);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    font-weight: 800;
-    color: var(--texto-secundario);
-    transform: translate(-50%, -50%); 
-    cursor: pointer;
-    transition: all 0.2s ease-out;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-}
-
-.seat:hover { background-color: var(--borda); color: white; transform: translate(-50%, -50%) scale(1.1); }
-/* Cadeira Ativa (Módulo 2) */
-.seat.active { background-color: var(--primaria); border-color: #60a5fa; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); transform: translate(-50%, -50%) scale(1.1); }
-
-/* Cadeiras do Treinador (Módulo 3) */
+/* Mesa de Poker */
+.mesa-container { position: relative; width: 100%; max-width: 400px; height: 220px; margin: 0 auto; display: flex; align-items: center; justify-content: center; }
+.poker-table-shape { width: 85%; height: 65%; background: var(--mesa-pano); border-radius: 50%; border: 10px solid var(--mesa-borda); box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(0,0,0,0.8); position: relative; }
+.seat { position: absolute; width: 38px; height: 38px; background-color: var(--bg-fundo); border: 2px solid var(--borda); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 800; color: var(--texto-secundario); transform: translate(-50%, -50%); cursor: pointer; transition: 0.2s; font-family: 'Roboto Mono', monospace;}
+.seat:hover { background-color: var(--texto); color: var(--bg-fundo); transform: translate(-50%, -50%) scale(1.15); z-index: 10;}
+.seat.active { background-color: var(--primaria); border-color: #60a5fa; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); transform: translate(-50%, -50%) scale(1.15); z-index: 10;}
 .seat.hero { background-color: var(--primaria); color: white; border-color: #93c5fd; box-shadow: 0 0 15px rgba(59,130,246,0.8); cursor: default; }
 .seat.villain { background-color: var(--perigo); color: white; border-color: #fca5a5; box-shadow: 0 0 15px rgba(239,68,68,0.8); cursor: default; }
 
-/* =========================================
-   MATRIZ DE RANGES (GTO GRID)
-========================================= */
-.legenda-gto { display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; font-size: 14px; color: var(--texto-secundario); font-weight: 600;}
+/* Matriz 13x13 */
+.legenda-gto { display: flex; gap: 15px; justify-content: center; margin-bottom: 15px; font-size: 13px; font-weight: 600;}
 .dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle;}
+.grid-poker { display: grid; grid-template-columns: repeat(13, 1fr); gap: 2px; width: 100%; max-width: 400px; margin: 0 auto;}
+.celula-mao { background-color: var(--bg-fundo); border: 1px solid var(--borda); color: rgba(255,255,255,0.4); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; aspect-ratio: 1 / 1; border-radius: 3px; cursor: pointer; font-family: 'Roboto Mono', monospace; transition: transform 0.1s;}
+.celula-mao:hover { transform: scale(1.3); z-index: 10; position: relative; box-shadow: 0 0 10px rgba(0,0,0,0.8); color: white; border-color: white;}
 
-.grid-poker { display: grid; grid-template-columns: repeat(13, 1fr); gap: 3px; max-width: 550px; margin: 0 auto; }
-.celula-mao { background-color: var(--bg-fundo); border: 1px solid var(--borda); color: var(--texto-secundario); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; aspect-ratio: 1 / 1; border-radius: 4px; transition: transform 0.1s; cursor: pointer;}
-.celula-mao:hover { transform: scale(1.15); z-index: 10; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.8); color: white; border-color: white;}
+/* Cores GTO Grid */
+.acao-raise { background-color: var(--perigo) !important; color: white !important; border-color: #b91c1c !important;}
+.acao-call { background-color: var(--sucesso) !important; color: white !important; border-color: #047857 !important;}
+.acao-fold { background-color: var(--fold) !important; border-color: #172554 !important; color: rgba(255,255,255,0.7) !important;}
 
-/* Cores de Ações Puras */
-.acao-raise { background-color: var(--perigo) !important; color: white !important; border-color: #b91c1c !important; }
-.acao-call { background-color: var(--sucesso) !important; color: white !important; border-color: #047857 !important; }
-.acao-fold { background-color: var(--bg-fundo) !important; border-color: var(--borda) !important; color: var(--texto-secundario) !important;}
-
-/* Feedback Treinador */
-.feedback-acerto { background-color: rgba(16, 185, 129, 0.2); border: 1px solid var(--sucesso); color: var(--sucesso); }
-.feedback-erro { background-color: rgba(239, 68, 68, 0.2); border: 1px solid var(--perigo); color: var(--perigo); }
+/* Módulo 3: Treinador */
+.btn-acao { flex: 1; padding: 15px; font-size: 16px; font-weight: 800; border: none; border-radius: 8px; cursor: pointer; transition: 0.2s; color: white; border: 2px solid transparent;}
+.btn-acao:hover { filter: brightness(1.2); transform: translateY(-2px);}
+.feedback-box { margin-top: 20px; padding: 15px; border-radius: 8px; font-weight: 500; font-size: 15px; }
+.feedback-acerto { background-color: rgba(16, 185, 129, 0.15); border: 1px solid var(--sucesso); color: var(--sucesso); }
+.feedback-erro { background-color: rgba(239, 68, 68, 0.15); border: 1px solid var(--perigo); color: var(--perigo); }
