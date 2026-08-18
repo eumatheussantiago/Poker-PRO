@@ -3,69 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poker Pro Analytics - Dashboard para gestão de Bankroll e estudo GTO">
-    <meta name="theme-color" content="#0f1115">
-    <meta name="color-scheme" content="dark">
     <title>Poker Pro Analytics | Dashboard</title>
-    <!-- Preload de Fontes -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Fontes Premium -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Roboto+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-    <!-- Scripts Externos com defer para melhor performance -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <script src="app.js" defer></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
-    <!-- Container para Notificações (Toasts) -->
     <div id="toast-container"></div>
 
-    <!-- ==========================================
-         TELA DE AUTENTICAÇÃO
-    =========================================== -->
-    <div id="auth-screen" class="auth-container">
+    <div id="auth-screen" class="auth-container hidden">
         <div class="card auth-card">
             <h2 style="font-size: 28px; margin-bottom: 5px; color: var(--primaria);">♠️ Poker Pro</h2>
             <p style="color: var(--texto-secundario); margin-bottom: 25px;">O próximo nível do seu jogo.</p>
             
             <div class="auth-tabs">
-                <button id="tab-login" class="tab-btn active-tab" onclick="mostrarAbaAuth('login')">Entrar</button>
-                <button id="tab-signup" class="tab-btn" onclick="mostrarAbaAuth('signup')">Cadastre-se</button>
+                <button type="button" id="tab-login" class="tab-btn active-tab" onclick="mostrarAbaAuth('login')">Entrar</button>
+                <button type="button" id="tab-signup" class="tab-btn" onclick="mostrarAbaAuth('signup')">Cadastre-se</button>
             </div>
 
             <div id="form-login" class="auth-form">
                 <input type="email" id="login-email" placeholder="E-mail">
                 <input type="password" id="login-senha" placeholder="Senha">
-                <button id="btn-login" class="btn-primario" onclick="fazerLogin()" style="width: 100%; margin-top: 10px;">Acessar Dashboard</button>
+                <button type="button" id="btn-login" class="btn-primario" onclick="fazerLogin()" style="width: 100%; margin-top: 10px;">Acessar Dashboard</button>
             </div>
 
             <div id="form-signup" class="auth-form hidden">
                 <input type="text" id="signup-nome" placeholder="Seu Nome">
                 <input type="email" id="signup-email" placeholder="Seu E-mail">
                 <input type="password" id="signup-senha" placeholder="Crie uma Senha">
-                <button id="btn-signup" class="btn-primario" onclick="fazerCadastro()" style="width: 100%; margin-top: 10px;">Criar Conta</button>
+                <button type="button" id="btn-signup" class="btn-primario" onclick="fazerCadastro()" style="width: 100%; margin-top: 10px;">Criar Conta</button>
             </div>
         </div>
     </div>
 
-    <!-- ==========================================
-         APLICATIVO PRINCIPAL (DASHBOARD)
-    =========================================== -->
     <div id="app-container" class="hidden">
         
         <header id="app-header">
             <div class="header-content">
                 <div style="display: flex; align-items: center; gap: 20px;">
                     <h1>♠️ Poker Pro</h1>
-                    <!-- Menu de Navegação SaaS -->
                     <nav class="app-nav">
-                        <button class="nav-item active" onclick="navegarApp('bankroll')">📊 Bankroll</button>
-                        <button class="nav-item" onclick="navegarApp('ranges')">🎯 Estudo GTO</button>
-                        <button class="nav-item" onclick="navegarApp('trainer')">🧠 Treinador</button>
+                        <button type="button" id="nav-bankroll" class="nav-item active" onclick="navegarApp('bankroll')">📊 Bankroll</button>
+                        <button type="button" id="nav-ranges" class="nav-item" onclick="navegarApp('ranges')">🎯 Estudo GTO</button>
+                        <button type="button" id="nav-trainer" class="nav-item" onclick="navegarApp('trainer')">🧠 Treinador</button>
                     </nav>
                 </div>
                 
@@ -73,14 +56,13 @@
                     <div class="rng-tool" onclick="gerarRNG()" title="Gerar número aleatório">
                         RNG: <strong id="rng-value" class="mono">--</strong>
                     </div>
-                    <button class="btn-secundario" onclick="fazerLogout()" style="padding: 6px 12px; font-size: 12px;">Sair</button>
+                    <button type="button" class="btn-secundario" onclick="fazerLogout()" style="padding: 6px 12px; font-size: 12px;">Sair</button>
                 </div>
             </div>
         </header>
 
         <main id="app-main">
             
-            <!-- MÓDULO 1: FINANÇAS E ESTATÍSTICAS -->
             <section class="module-section active-module" id="module-bankroll">
                 <div class="card">
                     <h2>Gestão Financeira (Cloud)</h2>
@@ -93,7 +75,7 @@
                         <input type="number" id="buy-in" placeholder="Buy-in (R$)">
                         <input type="number" id="cash-out" placeholder="Cash-out (R$)">
                         <input type="number" id="horas-jogadas" placeholder="Horas" step="0.5" min="0.5">
-                        <button id="btn-sessao" class="btn-primario" onclick="registrarSessao()">Salvar Sessão</button>
+                        <button type="button" id="btn-sessao" class="btn-primario" onclick="registrarSessao()">Salvar Sessão</button>
                     </div>
                     
                     <div class="stats-container">
@@ -104,12 +86,11 @@
                     </div>
 
                     <div class="filtros-bankroll">
-                        <button class="btn-secundario" onclick="calcularEAtualizarTela('Todos')">Todos</button>
-                        <button class="btn-secundario" onclick="calcularEAtualizarTela('Online')">Apenas Online</button>
-                        <button class="btn-secundario" onclick="calcularEAtualizarTela('Ao Vivo')">Apenas Ao Vivo</button>
+                        <button type="button" class="btn-secundario" onclick="calcularEAtualizarTela('Todos')">Todos</button>
+                        <button type="button" class="btn-secundario" onclick="calcularEAtualizarTela('Online')">Apenas Online</button>
+                        <button type="button" class="btn-secundario" onclick="calcularEAtualizarTela('Ao Vivo')">Apenas Ao Vivo</button>
                     </div>
 
-                    <!-- CORREÇÃO: Removido width/height fixo da tag, será controlado pelo CSS -->
                     <div class="grafico-container">
                         <canvas id="graficoBankroll"></canvas>
                     </div>
@@ -117,7 +98,7 @@
                     <div class="historico-container">
                         <div class="historico-header">
                             <h3>Últimas Sessões</h3>
-                            <button class="btn-secundario" onclick="exportarCSV()">📥 Exportar .csv</button>
+                            <button type="button" class="btn-secundario" onclick="exportarCSV()">📥 Exportar .csv</button>
                         </div>
                         <div class="table-responsive">
                             <table class="tabela-historico">
@@ -138,13 +119,11 @@
                 </div>
             </section>
 
-            <!-- MÓDULO 2: VISUALIZADOR DE RANGES (GTO) -->
             <section class="module-section" id="module-ranges">
                 <div class="card">
                     <h2>Motor de Estudo GTO (9-Max)</h2>
                     
                     <div class="layout-3-col">
-                        <!-- Coluna 1: Filtros -->
                         <div class="col-panel">
                             <h3>Cenário</h3>
                             <div class="form-grupo-vertical">
@@ -161,13 +140,11 @@
                             </div>
                         </div>
 
-                        <!-- Coluna 2: Mesa -->
                         <div class="col-panel center-panel">
                             <h3 style="text-align: center;">Mesa (Selecione a Posição)</h3>
                             <div class="mesa-container" id="mesa-visualizador"></div>
                         </div>
 
-                        <!-- Coluna 3: Matriz -->
                         <div class="col-panel">
                             <div class="legenda-gto">
                                 <div><span class="dot acao-raise"></span> Raise</div>
@@ -180,7 +157,6 @@
                 </div>
             </section>
 
-            <!-- MÓDULO 3: MODO TREINADOR (QUIZ) -->
             <section class="module-section" id="module-trainer">
                 <div class="card">
                     <h2>🧠 Treinador de Decisão</h2>
@@ -206,20 +182,20 @@
                             </div>
                             
                             <div id="quiz-controles" style="display: flex; gap: 15px; justify-content: center; max-width: 500px; margin: 0 auto;">
-                                <button class="btn-acao acao-raise" onclick="responderQuiz('raise')">Raise</button>
-                                <button class="btn-acao acao-call" onclick="responderQuiz('call')">Call</button>
-                                <button class="btn-acao acao-fold" onclick="responderQuiz('fold')">Fold</button>
+                                <button type="button" class="btn-acao acao-raise" onclick="responderQuiz('raise')">Raise</button>
+                                <button type="button" class="btn-acao acao-call" onclick="responderQuiz('call')">Call</button>
+                                <button type="button" class="btn-acao acao-fold" onclick="responderQuiz('fold')">Fold</button>
                             </div>
 
                             <div id="quiz-feedback" class="hidden feedback-box"></div>
-                            <button id="btn-proxima" class="btn-primario hidden" onclick="gerarPerguntaQuiz()" style="margin-top: 20px; max-width: 500px; width: 100%;">Próxima Mão ➡️</button>
+                            <button type="button" id="btn-proxima" class="btn-primario hidden" onclick="gerarPerguntaQuiz()" style="margin-top: 20px; max-width: 500px; width: 100%;">Próxima Mão ➡️</button>
                         </div>
                     </div>
                 </div>
             </section>
-
         </main>
     </div>
 
+    <script src="app.js"></script>
 </body>
 </html>
