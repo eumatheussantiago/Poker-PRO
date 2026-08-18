@@ -3,55 +3,178 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Pro</title>
+    <title>Poker Pro | Dashboard</title>
+    <!-- Fonte Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Folha de Estilos -->
     <link rel="stylesheet" href="style.css">
-    <!-- Importação do Chart.js para os gráficos -->
+    <!-- Biblioteca de Gráficos -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Poker Pro</h1>
+
+    <!-- ==========================================
+         TELA DE AUTENTICAÇÃO
+    =========================================== -->
+    <div id="auth-screen" class="auth-container">
+        <div class="card auth-card">
+            <h2 style="font-size: 28px; margin-bottom: 10px;">♠️ Poker Pro</h2>
+            <p style="color: var(--texto-secundario); margin-bottom: 25px;">O próximo nível do seu jogo.</p>
+            
+            <div class="auth-tabs">
+                <button id="tab-login" class="tab-btn active-tab" onclick="mostrarAba('login')">Entrar</button>
+                <button id="tab-signup" class="tab-btn" onclick="mostrarAba('signup')">Cadastre-se</button>
+            </div>
+
+            <!-- Login -->
+            <div id="form-login" class="auth-form">
+                <input type="email" id="login-email" placeholder="E-mail">
+                <input type="password" id="login-senha" placeholder="Senha (use: poker123)">
+                <button onclick="fazerLogin()" style="width: 100%; margin-top: 15px;">Acessar Dashboard</button>
+            </div>
+
+            <!-- Cadastro -->
+            <div id="form-signup" class="auth-form hidden">
+                <input type="text" id="signup-nome" placeholder="Seu Nome">
+                <input type="email" id="signup-email" placeholder="Seu E-mail">
+                <input type="password" id="signup-senha" placeholder="Crie uma Senha">
+                <button onclick="fazerCadastro()" style="width: 100%; margin-top: 15px;">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         APLICATIVO PRINCIPAL (DASHBOARD)
+    =========================================== -->
+    <header id="app-header" class="hidden">
+        <h1>♠️ Poker Pro</h1>
     </header>
 
-    <main>
-        <!-- Módulo: Gestão de Bankroll -->
-        <section id="bankroll-section">
-            <h2>Controle de Bankroll</h2>
-            <input type="number" id="buy-in" placeholder="Buy-in (R$)">
-            <input type="number" id="cash-out" placeholder="Cash-out (R$)">
-            <button onclick="registrarSessao()">Salvar Sessão</button>
+    <main id="app-main" class="hidden">
+        
+        <!-- MÓDULO 1: FINANÇAS E ESTATÍSTICAS -->
+        <section class="card" id="bankroll-section">
+            <h2>📊 Dashboard Financeiro</h2>
             
-            <div id="resultado-bankroll" style="margin-top: 15px;">
-                <p>Lucro Total: <strong id="lucro-total">R$ 0.00</strong></p>
-                <p>ROI: <strong id="roi-total">0.00%</strong></p>
-                <p>Sessões Jogadas: <strong id="sessoes-total">0</strong></p>
+            <div class="form-grupo">
+                <select id="tipo-local">
+                    <option value="Online">🌐 Online</option>
+                    <option value="Ao Vivo">🃏 Ao Vivo</option>
+                </select>
+                <input type="number" id="buy-in" placeholder="Buy-in (R$)">
+                <input type="number" id="cash-out" placeholder="Cash-out (R$)">
+                <input type="number" id="horas-jogadas" placeholder="Horas" step="0.5" min="0.5">
+                <button onclick="registrarSessao()">Salvar</button>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-box"><span>Lucro Total</span><strong id="lucro-total">R$ 0.00</strong></div>
+                <div class="stat-box"><span>ROI</span><strong id="roi-total">0.00%</strong></div>
+                <div class="stat-box"><span>Winrate</span><strong id="winrate-total">R$ 0.00/h</strong></div>
+                <div class="stat-box"><span>Sessões</span><strong id="sessoes-total">0</strong></div>
             </div>
 
-            <!-- Gráfico de evolução -->
-            <div style="margin-top: 20px; background-color: #222; padding: 10px; border-radius: 8px;">
-                <canvas id="graficoBankroll" width="400" height="200"></canvas>
+            <div class="form-grupo" style="justify-content: center; margin-bottom: 10px;">
+                <button class="secundario" onclick="calcularEAtualizarTela('Todos')">Todos</button>
+                <button class="secundario" onclick="calcularEAtualizarTela('Online')">Online</button>
+                <button class="secundario" onclick="calcularEAtualizarTela('Ao Vivo')">Ao Vivo</button>
+            </div>
+
+            <!-- Gráfico de Evolução -->
+            <div style="background-color: var(--bg-fundo); padding: 15px; border-radius: 8px; border: 1px solid var(--borda);">
+                <canvas id="graficoBankroll" width="400" height="150"></canvas>
+            </div>
+
+            <!-- Histórico Recente -->
+            <div style="margin-top: 30px; overflow-x: auto;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 15px;">
+                    <h2 style="margin: 0; border: none; padding: 0;">Últimas Sessões</h2>
+                    <button class="secundario" onclick="exportarCSV()">📥 Exportar .csv</button>
+                </div>
+                <table class="tabela-historico">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Local</th>
+                            <th>Tempo</th>
+                            <th>Buy-in</th>
+                            <th>Cash-out</th>
+                            <th>Lucro</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-tabela-historico"></tbody>
+                </table>
             </div>
         </section>
 
-        <hr>
-
-        <!-- Módulo: Matriz de Ranges -->
-        <section id="ranges-section">
-            <h2>Visualizador de Ranges</h2>
+        <!-- MÓDULO 2: VISUALIZADOR DE RANGES (GTO) -->
+        <section class="card" id="ranges-section">
+            <h2>🎯 Visualizador de Ranges (9-Max)</h2>
+            <p style="color: var(--texto-secundario); text-align: center;">Clique em um assento na mesa para inspecionar o Range da posição.</p>
             
-            <!-- Botões de controle -->
-            <div class="controles-range">
-                <button onclick="aplicarRange('UTG')">Range UTG</button>
-                <button onclick="aplicarRange('BTN')">Range BTN</button>
-                <button onclick="aplicarRange('LIMPAR')" style="background-color: #555;">Limpar</button>
+            <!-- Mesa Interativa 9-Max -->
+            <div class="mesa-container" id="mesa-visualizador"></div>
+
+            <div class="form-grupo" style="justify-content: center; margin-top: 20px;">
+                <select id="acao-vilao" onchange="aplicarRangeAvancadoUI()">
+                    <option value="RFI">Ação do Vilão: Open Raise (RFI)</option>
+                    <option value="vs_Raise">Ação do Vilão: Enfrentando Raise</option>
+                </select>
             </div>
 
-            <div id="matriz-grid" class="grid-poker">
-                <!-- O JavaScript vai injetar as 169 mãos aqui dentro -->
+            <div class="legenda-gto">
+                <div><span class="dot acao-raise"></span> Raise</div>
+                <div><span class="dot acao-call"></span> Call</div>
+                <div><span class="dot acao-fold" style="border: 1px solid var(--borda);"></span> Fold</div>
+            </div>
+
+            <!-- Matriz 13x13 -->
+            <div id="matriz-grid" class="grid-poker"></div>
+        </section>
+
+        <!-- MÓDULO 3: MODO TREINADOR (QUIZ) -->
+        <section class="card" id="trainer-section">
+            <h2>🧠 Treinador de Decisão</h2>
+            
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <!-- Placar -->
+                <div style="display: flex; gap: 15px; flex-direction: column; flex: 1; min-width: 150px;">
+                    <div class="stat-box">
+                        <span>Acertos Seguidos</span>
+                        <strong id="quiz-score" style="color: var(--primaria);">0</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>Recorde Máximo</span>
+                        <strong id="quiz-high-score" style="color: var(--sucesso);">0</strong>
+                    </div>
+                </div>
+
+                <!-- Arena de Jogo -->
+                <div style="flex: 3; background-color: var(--bg-fundo); border: 1px solid var(--borda); border-radius: 8px; padding: 20px; text-align: center;">
+                    
+                    <!-- Mini Mesa Visual do Treinador -->
+                    <div class="mesa-container" id="mesa-treinador" style="height: 200px; max-width: 450px;"></div>
+
+                    <div id="quiz-cenario" style="margin-top: 20px;">
+                        <p style="font-size: 16px; color: var(--texto); font-weight: 600;" id="quiz-texto-acao"></p>
+                        <div id="quiz-mao" style="font-size: 54px; font-weight: 800; margin: 15px 0; color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.2);">?</div>
+                    </div>
+                    
+                    <!-- Botões de Ação -->
+                    <div id="quiz-controles" style="display: flex; gap: 15px; justify-content: center;">
+                        <button class="acao-raise" onclick="responderQuiz('raise')" style="flex: 1; font-size: 16px; padding: 15px;">Raise</button>
+                        <button class="acao-call" onclick="responderQuiz('call')" style="flex: 1; font-size: 16px; padding: 15px;">Call</button>
+                        <button class="acao-fold" onclick="responderQuiz('fold')" style="flex: 1; font-size: 16px; padding: 15px;">Fold</button>
+                    </div>
+
+                    <!-- Feedback -->
+                    <div id="quiz-feedback" class="hidden" style="margin-top: 20px; padding: 15px; border-radius: 8px; font-weight: bold; font-size: 15px;"></div>
+                    <button id="btn-proxima" class="hidden" onclick="gerarPerguntaQuiz()" style="margin-top: 15px; width: 100%; padding: 15px; font-size: 16px;">Próxima Mão ➡️</button>
+                </div>
             </div>
         </section>
+
     </main>
-
     <script src="app.js"></script>
 </body>
 </html>

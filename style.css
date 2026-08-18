@@ -1,87 +1,133 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1e1e1e;
-    color: #ffffff;
-    padding: 20px;
-    margin: 0;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+:root {
+    --bg-fundo: #0f172a; 
+    --bg-card: #1e293b;
+    --primaria: #3b82f6; 
+    --primaria-hover: #2563eb;
+    --texto: #f8fafc;
+    --texto-secundario: #94a3b8;
+    --sucesso: #10b981;
+    --perigo: #ef4444;
+    --borda: #334155;
+    
+    /* Variáveis da Mesa */
+    --mesa-pano: radial-gradient(ellipse, #15803d 0%, #14532d 100%);
+    --mesa-borda: #0f172a;
 }
 
-section {
-    background-color: #2d2d2d;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-}
+body { font-family: 'Inter', sans-serif; background-color: var(--bg-fundo); color: var(--texto); margin: 0; padding: 0; line-height: 1.5; }
 
-input, button {
-    padding: 10px;
-    margin: 5px 5px 5px 0;
-    border-radius: 4px;
-    border: none;
-}
+/* Utilitários */
+.hidden { display: none !important; }
+.lucro-positivo { color: var(--sucesso) !important; }
+.lucro-negativo { color: var(--perigo) !important; }
 
-button {
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-    font-weight: bold;
-}
+/* =========================================
+   TELA DE AUTENTICAÇÃO
+========================================= */
+.auth-container { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: radial-gradient(circle at top, #1e293b 0%, var(--bg-fundo) 70%); padding: 20px;}
+.auth-card { max-width: 380px; width: 100%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border-top: 4px solid var(--primaria); background-color: var(--bg-card); padding: 30px; border-radius: 12px; }
+.auth-card input { width: 100%; box-sizing: border-box; margin-bottom: 15px; background-color: #0f172a; border: 1px solid var(--borda); color: white; padding: 12px; border-radius: 8px;}
+.auth-tabs { display: flex; margin-bottom: 20px; background-color: var(--bg-fundo); border-radius: 8px; padding: 5px; }
+.tab-btn { flex: 1; background: transparent; color: var(--texto-secundario); padding: 10px; margin: 0; border-radius: 6px; border: none; cursor: pointer; font-weight: 600;}
+.tab-btn:hover { color: var(--texto); }
+.active-tab { background-color: var(--bg-card); color: var(--texto); box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
 
-hr {
-    border-color: #444;
-    margin: 30px 0;
-}
+/* =========================================
+   ESTRUTURA GERAL (DASHBOARD)
+========================================= */
+header { background-color: var(--bg-card); padding: 20px; text-align: center; border-bottom: 1px solid var(--borda); }
+header h1 { margin: 0; font-size: 24px; font-weight: 800; color: var(--primaria); }
+main { max-width: 1000px; margin: 30px auto; padding: 0 20px; display: grid; gap: 30px; }
+.card { background-color: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--borda); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+h2 { margin-top: 0; font-size: 18px; border-bottom: 1px solid var(--borda); padding-bottom: 10px; margin-bottom: 20px; }
 
-/* Matriz 13x13 */
-.grid-poker {
-    display: grid;
-    grid-template-columns: repeat(13, 1fr);
-    gap: 2px;
+/* Controles e Botões */
+.form-grupo { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+input, select { padding: 12px; border-radius: 8px; border: 1px solid var(--borda); background-color: var(--bg-fundo); color: var(--texto); flex: 1; min-width: 120px; font-family: 'Inter', sans-serif;}
+button { padding: 12px 20px; border-radius: 8px; border: none; background-color: var(--primaria); color: white; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif;}
+button:hover { background-color: var(--primaria-hover); transform: translateY(-2px); }
+button.secundario { background-color: transparent; border: 1px solid var(--borda); color: var(--texto); }
+button.secundario:hover { background-color: var(--borda); }
+
+/* Financeiro Stats */
+.stats-container { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+.stat-box { flex: 1; background-color: var(--bg-fundo); padding: 15px; border-radius: 8px; text-align: center; border: 1px solid var(--borda); min-width: 130px; }
+.stat-box span { display: block; font-size: 12px; color: var(--texto-secundario); text-transform: uppercase; margin-bottom: 5px; font-weight: 600;}
+.stat-box strong { font-size: 22px; font-weight: 800; }
+
+.tabela-historico { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tabela-historico th, .tabela-historico td { padding: 12px; text-align: left; border-bottom: 1px solid var(--borda); }
+.tabela-historico th { color: var(--texto-secundario); font-weight: 600; }
+
+/* =========================================
+   MESA DE POKER VISUAL (GEOMETRIA)
+========================================= */
+.mesa-container {
+    position: relative;
+    width: 100%;
     max-width: 600px;
+    height: 250px; 
+    margin: 20px auto 40px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Estilo individual de cada mão na matriz */
-.celula-mao {
-    background-color: #3b3b3b;
-    border: 1px solid #222;
-    color: #e0e0e0;
+.poker-table-shape {
+    width: 75%;
+    height: 60%;
+    background: var(--mesa-pano);
+    border-radius: 50%; /* Oval Perfeito */
+    border: 12px solid var(--mesa-borda);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,0,0,0.6);
+    position: relative;
+}
+
+/* Cadeiras */
+.seat {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background-color: var(--bg-fundo);
+    border: 2px solid var(--borda);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    font-weight: bold;
-    aspect-ratio: 1 / 1;
+    font-weight: 800;
+    color: var(--texto-secundario);
+    transform: translate(-50%, -50%); 
     cursor: pointer;
-    transition: transform 0.1s, filter 0.1s;
+    transition: all 0.2s ease-out;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
 }
 
-.celula-mao:hover {
-    transform: scale(1.1);
-    filter: brightness(1.5);
-    z-index: 10;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-}
+.seat:hover { background-color: var(--borda); color: white; transform: translate(-50%, -50%) scale(1.1); }
+/* Cadeira Ativa (Módulo 2) */
+.seat.active { background-color: var(--primaria); border-color: #60a5fa; color: white; box-shadow: 0 0 15px rgba(59, 130, 246, 0.6); transform: translate(-50%, -50%) scale(1.1); }
 
-.controles-range {
-    margin-bottom: 15px;
-}
+/* Cadeiras do Treinador (Módulo 3) */
+.seat.hero { background-color: var(--primaria); color: white; border-color: #93c5fd; box-shadow: 0 0 15px rgba(59,130,246,0.8); cursor: default; }
+.seat.villain { background-color: var(--perigo); color: white; border-color: #fca5a5; box-shadow: 0 0 15px rgba(239,68,68,0.8); cursor: default; }
 
-/* Cores Puras das ações do GTO */
-.acao-raise { 
-    background-color: #e74c3c; /* Vermelho */
-    color: white; 
-    border-color: #c0392b; 
-}
+/* =========================================
+   MATRIZ DE RANGES (GTO GRID)
+========================================= */
+.legenda-gto { display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; font-size: 14px; color: var(--texto-secundario); font-weight: 600;}
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle;}
 
-.acao-call { 
-    background-color: #2ecc71; /* Verde */
-    color: #111; 
-    border-color: #27ae60; 
-}
+.grid-poker { display: grid; grid-template-columns: repeat(13, 1fr); gap: 3px; max-width: 550px; margin: 0 auto; }
+.celula-mao { background-color: var(--bg-fundo); border: 1px solid var(--borda); color: var(--texto-secundario); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; aspect-ratio: 1 / 1; border-radius: 4px; transition: transform 0.1s; cursor: pointer;}
+.celula-mao:hover { transform: scale(1.15); z-index: 10; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.8); color: white; border-color: white;}
 
-.acao-fold { 
-    background-color: #2c3e50; /* Azul escuro */
-    color: #7f8c8d; 
-    border-color: #1a252f; 
-}
+/* Cores de Ações Puras */
+.acao-raise { background-color: var(--perigo) !important; color: white !important; border-color: #b91c1c !important; }
+.acao-call { background-color: var(--sucesso) !important; color: white !important; border-color: #047857 !important; }
+.acao-fold { background-color: var(--bg-fundo) !important; border-color: var(--borda) !important; color: var(--texto-secundario) !important;}
+
+/* Feedback Treinador */
+.feedback-acerto { background-color: rgba(16, 185, 129, 0.2); border: 1px solid var(--sucesso); color: var(--sucesso); }
+.feedback-erro { background-color: rgba(239, 68, 68, 0.2); border: 1px solid var(--perigo); color: var(--perigo); }
