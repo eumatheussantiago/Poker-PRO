@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poker Pro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Poker Pro</h1>
+    </header>
+
+    <main>
+        <!-- Módulo: Gestão de Bankroll -->
+        <section id="bankroll-section">
+            <h2>Controle de Bankroll</h2>
+            <input type="number" id="buy-in" placeholder="Buy-in (R$)">
+            <input type="number" id="cash-out" placeholder="Cash-out (R$)">
+            <button onclick="registrarSessao()">Salvar Sessão</button>
+            
+            <div id="resultado-bankroll">
+                <p>Lucro Total: <span id="lucro-total">R$ 0.00</span></p>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- Módulo: Matriz de Ranges -->
+        <section id="ranges-section">
+            <h2>Visualizador de Ranges</h2>
+            <div id="matriz-grid" class="grid-poker">
+                <!-- O JavaScript vai injetar as 169 mãos aqui dentro -->
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
